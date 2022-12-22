@@ -100,10 +100,8 @@ def print_pairing_info(melon_types):
 
     # Fill in the rest
     for melon in melon_types:
-        name = melon.name
-        pairings = melon.pairings
-        print(f"{name} pairs with:")
-        for pair in pairings:
+        print(f"{melon.name} pairs with:")
+        for pair in melon.pairings:
             print(f"- {pair}")
 
 # print_pairing_info(melons_list)
@@ -116,9 +114,7 @@ def make_melon_type_lookup(melon_types):
     melon_dict = {}
 
     for melon in melon_types:
-        name = melon.name
-        code = melon.code
-        melon_dict[code] = name
+        melon_dict[melon.code] = melon.name
     
     print(melon_dict)
     return melon_dict
@@ -257,11 +253,45 @@ def get_sellability_report(melons):
 
     # Fill in the rest
     for melon in melons:
-        harvested_by = melon.harvested_by
-        from_field = melon.from_field
         if melon.is_sellable() == True:
-            print(f"Harvested by {harvested_by} from Field {from_field} (CAN BE SOLD)")
+            print(f"Harvested by {melon.harvested_by} from Field {melon.from_field} (CAN BE SOLD)")
         else:
-            print(f"Harvested by {harvested_by} from Field {from_field} (NOT SELLABLE)")
+            print(f"Harvested by {melon.harvested_by} from Field {melon.from_field} (NOT SELLABLE)")
     
 get_sellability_report(melons)
+
+
+###################
+#  Further Study  #
+###################
+
+def create_melon_from_file(filename):
+    """Write a function that opens and loops over the file, 
+    creating a melon object for each line of the file
+    
+    Reference:
+    Melon(self, melon_type, shape_rating, color_rating, from_field, harvested_by):
+
+    """
+    create_melon = []
+
+    melons_by_id = make_melon_type_lookup(melons_list)
+
+    melon_file = open(filename)
+    for line in melon_file:
+
+        # Method #1: Created variable for rstrip() and split() and used indexes to create Melon object 
+        # melon_data = line.rstrip().split(" ")
+        # create_melon.append(Melon(melons_by_id[melon_data[5]], melon_data[1], melon_data[3], melon_data[11], melon_data[8]))
+
+        # Method #2: Unpacked variables and used variable names to create Melon object
+        _, shape_rating, _, color_rating, _ , melon_type, _, _, harvested_by, _, _, from_field = line.rstrip().split(" ")
+        create_melon.append(Melon(melons_by_id[melon_type], shape_rating, color_rating, from_field, harvested_by))
+
+    for melon in create_melon:
+        print(melon.melon_type)
+    
+    return create_melon
+
+create_melon_from_file("harvest_log.txt")
+
