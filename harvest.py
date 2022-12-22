@@ -286,7 +286,7 @@ def create_melon_from_file(filename):
 
         # Method #2: Unpacked variables and used variable names to create Melon object
         _, shape_rating, _, color_rating, _ , melon_type, _, _, harvested_by, _, _, from_field = line.rstrip().split(" ")
-        create_melon.append(Melon(melons_by_id[melon_type], shape_rating, color_rating, from_field, harvested_by))
+        create_melon.append(Melon(melons_by_id[melon_type], int(shape_rating), int(color_rating), from_field, harvested_by))
 
     for melon in create_melon:
         print(melon.melon_type)
